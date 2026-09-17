@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+
+@theme {
+  --color-primary: #11175D;
+   --text-34: 34px;
+   --font-nunito: "Nunito"; 
+  
+}
