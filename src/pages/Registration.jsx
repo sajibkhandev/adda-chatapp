@@ -55,6 +55,8 @@ const Registration = () => {
             setLoader(true)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
+                    // console.log(userCredential.user);
+                    
                     
                     sendEmailVerification(auth.currentUser)
 
