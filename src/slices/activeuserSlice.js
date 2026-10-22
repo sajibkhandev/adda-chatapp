@@ -3,14 +3,16 @@ import { createSlice } from '@reduxjs/toolkit'
 export const activeuserSlice = createSlice({
     name: "active",
     initialState: {
-        value: 0
+        value: null
     },
     reducers: {
        activeuserinfo:(state,action) => {
-            console.log(state.value);
-            console.log(action.payload);
+            
+            state.value=action.payload
+           
             
         },
+      
 
     }
 })

@@ -5,13 +5,15 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword,sendEmailVerification  } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import { Audio } from 'react-loader-spinner'
+import { getDatabase, push, ref, set } from "firebase/database";
 
 
 const Registration = () => {
     const auth = getAuth();
+    const db = getDatabase();
     const navigate = useNavigate()
 
     let [email, setEmail] = useState('')
@@ -56,11 +58,21 @@ const Registration = () => {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     // console.log(userCredential.user);
-                    
-                    
                     sendEmailVerification(auth.currentUser)
-
                     toast.success("Registration Successfully");
+
+
+                    set(push(ref(db, 'allusers/')), {
+                        name: name,
+                        email: userCredential.user.email,
+                        userid:userCredential.user.uid
+                        
+                    })
+
+
+
+
+
                     setTimeout(() => {
                         navigate('/login')
                     }, 2000)

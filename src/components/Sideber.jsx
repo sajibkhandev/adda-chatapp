@@ -6,6 +6,7 @@ import Profile from '../assets/profile.jpg'
 import Image from './Image'
 import { Link, useLocation } from 'react-router-dom';
 import { IoMdCloudUpload } from "react-icons/io";
+import { useSelector } from 'react-redux';
 
 
 
@@ -14,7 +15,10 @@ import { IoMdCloudUpload } from "react-icons/io";
 const Sideber = () => {
   let location = useLocation()
   let active=location.pathname.replace("/","")
-  console.log(active);
+ let data = useSelector((state=>state.activeuser.value))
+ 
+ 
+  
   
   return (
     <div className='py-13 flex flex-col justify-between items-center w-[85%] mx-auto h-[94vh] bg-red-200 rounded-[20px] mt-8'>
@@ -26,6 +30,7 @@ const Sideber = () => {
         <div className='absolute top-0 left-0 w-full h-full bg-transparent group-hover:bg-black/30 rounded-full duration-500 flex justify-center items-center'>
         <IoMdCloudUpload className='text-xl text-transparent group-hover:text-white duration-500'/>
         </div>
+     <h2 className='text-center font-semibold pt-1'>Sajib khan</h2>
       </div>
 
       <div className='flex flex-col gap-y-14'>
