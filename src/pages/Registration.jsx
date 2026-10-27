@@ -65,7 +65,12 @@ const Registration = () => {
                     set(push(ref(db, 'allusers/')), {
                         name: name,
                         email: userCredential.user.email,
-                        userid:userCredential.user.uid
+                        userid:userCredential.user.uid,
+                        dataofbirth:"",
+                        coverphoto:"",
+                        profilepic:"",
+                        gender:"",
+
                         
                     })
 

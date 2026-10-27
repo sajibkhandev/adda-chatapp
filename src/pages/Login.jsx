@@ -70,6 +70,8 @@ const Login = () => {
                         toast.success("Login Successfully");
 
                         dispatch(activeuserinfo(userCredential.user))
+                        localStorage.setItem("userinfo",JSON.stringify(userCredential.user))
+                
                         
                         setTimeout(() => {
                             navigate('/home')
