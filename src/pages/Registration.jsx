@@ -66,11 +66,6 @@ const Registration = () => {
                         name: name,
                         email: userCredential.user.email,
                         userid:userCredential.user.uid,
-                        dataofbirth:"",
-                        coverphoto:"",
-                        profilepic:"",
-                        gender:"",
-
                         
                     })
 

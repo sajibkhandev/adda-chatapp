@@ -47,13 +47,9 @@ const Sideber = () => {
     onValue(alluserRef, (snapshot) => {
       let arr=[]
       snapshot.forEach(item=>{
-        
         if(data.uid==item.val().userid){
           arr.push(item.val());
         }
-
-        
-        
       })
       setAllUsers(arr);
       

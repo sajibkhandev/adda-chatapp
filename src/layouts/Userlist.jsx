@@ -5,30 +5,51 @@ import Image from '../components/Image'
 import UserSection from '../components/UserSection';
 import TitleSection from '../components/TitleSection';
 import Searchbar from '../components/Searchbar';
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Userlist = () => {
   const db = getDatabase();
-  const [alluser,setAllUser]=useState([])
+  const [alluser, setAllUser] = useState([])
+  const data = useSelector(state => state.activeuser.value)
+  // console.log(data.uid);
+
 
 
   useEffect(() => {
-    const starCountRef = ref(db, 'allusers' );
+    const starCountRef = ref(db, 'allusers');
     onValue(starCountRef, (snapshot) => {
-      let arr=[]
-      snapshot.forEach(item=>{
-        arr.push(item.val())
+      let arr = []
+      snapshot.forEach(item => {
+        if (data.uid != item.val().userid) {
+          arr.push(item.val())
+        }
       })
       setAllUser(arr);
-      
-      
+
+
     });
 
   }, [])
 
- 
-  
+  const handleAdd = (item) => {
+   
+    
+
+    set(push(ref(db, 'friendrequestlists/')), {
+      senderid:data.uid,
+      sendername:"Sajib Khan",
+      receiverid:item.userid,
+      receivername:item.name
+      
+      
+    });
+
+  }
+
+
+
 
 
   return (
@@ -39,12 +60,12 @@ const Userlist = () => {
 
         <div className='h-[260px] overflow-y-scroll'>
           {
-            alluser.map(item=>(
-              <UserSection image={Profile} name={item.name} bia={item.email} />
+            alluser.map(item => (
+              <UserSection onClickForAdd={()=>handleAdd(item)} buttontext="Add" image={Profile} name={item.name} bia={item.email} />
 
             ))
           }
-       
+
 
         </div>
       </div>

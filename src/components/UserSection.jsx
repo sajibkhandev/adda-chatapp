@@ -2,7 +2,7 @@ import React from 'react'
 import Image from './Image'
 
 
-const UserSection = ({image,name,bia}) => {
+const UserSection = ({image,name,bia,onClickForAdd,buttontext}) => {
   return (
     <div className='flex justify-between items-center px-5 my-4'>
                 <div className='flex gap-x-4 items-center'>
@@ -14,7 +14,7 @@ const UserSection = ({image,name,bia}) => {
                     <p className='text-sm font-normal'>{bia}</p>
                   </div>
                 </div>
-                <button className='bg-[#5F35F5] py-1 px-3 text-white font-bold rounded-md'>Join</button>
+                <button onClick={onClickForAdd} className='bg-[#5F35F5] py-1 px-3 text-white font-bold rounded-md'>{buttontext}</button>
               </div>
   )
 }
