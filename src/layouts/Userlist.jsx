@@ -34,16 +34,11 @@ const Userlist = () => {
   }, [])
 
   const handleAdd = (item) => {
-   
-    
-
     set(push(ref(db, 'friendrequestlists/')), {
       senderid:data.uid,
       sendername:"Sajib Khan",
       receiverid:item.userid,
       receivername:item.name
-      
-      
     });
 
   }
@@ -61,7 +56,7 @@ const Userlist = () => {
         <div className='h-[260px] overflow-y-scroll'>
           {
             alluser.map(item => (
-              <UserSection onClickForAdd={()=>handleAdd(item)} buttontext="Add" image={Profile} name={item.name} bia={item.email} />
+              <UserSection onClickForAdd={()=>handleAdd(item)}  buttontext="add" image={Profile} name={item.name} bia={item.email} />
 
             ))
           }
