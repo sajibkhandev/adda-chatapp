@@ -13,7 +13,9 @@ const Userlist = () => {
   const db = getDatabase();
   const [alluser, setAllUser] = useState([])
   const data = useSelector(state => state.activeuser.value)
-  // console.log(data.uid);
+ 
+    let [concatfriendrequrest,setConcateFriendRequest]=useState([])
+
 
 
 
@@ -36,13 +38,32 @@ const Userlist = () => {
   const handleAdd = (item) => {
     set(push(ref(db, 'friendrequestlists/')), {
       senderid:data.uid,
-      sendername:"Sajib Khan",
+      sendername:data.displayName,
       receiverid:item.userid,
       receivername:item.name
     });
 
   }
 
+  useEffect(() => {
+      const starCountRef = ref(db, 'friendrequestlists');
+      onValue(starCountRef, (snapshot) => {
+        let arr = []
+        snapshot.forEach(item => {
+            arr.push(item.val().receiverid + item.val().senderid)
+            
+          
+         
+        })
+        setConcateFriendRequest(arr);
+  
+  
+      });
+  
+    }, [])
+
+
+    
 
 
 
@@ -56,7 +77,15 @@ const Userlist = () => {
         <div className='h-[260px] overflow-y-scroll'>
           {
             alluser.map(item => (
-              <UserSection onClickForAdd={()=>handleAdd(item)}  buttontext="add" image={Profile} name={item.name} bia={item.email} />
+              
+                concatfriendrequrest.includes(item.userid+data.uid)||
+                concatfriendrequrest.includes(data.uid+item.userid)
+                ?
+                <UserSection  buttontext="panding" image={Profile} name={item.name} bia={item.email} />
+                :
+                <UserSection onClickForAdd={()=>handleAdd(item)}  buttontext="add" image={Profile} name={item.name} bia={item.email} />
+
+              
 
             ))
           }
@@ -69,3 +98,9 @@ const Userlist = () => {
 }
 
 export default Userlist
+
+
+
+
+
+

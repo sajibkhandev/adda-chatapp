@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import { Audio } from 'react-loader-spinner'
 import { getDatabase, push, ref, set } from "firebase/database";
@@ -57,17 +57,26 @@ const Registration = () => {
             setLoader(true)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // console.log(userCredential.user);
+                    console.log(userCredential.user);
                     sendEmailVerification(auth.currentUser)
                     toast.success("Registration Successfully");
 
+                    updateProfile(auth.currentUser, {
+                        displayName: name, 
+                        photoURL: "https://i.ibb.co.com/bjSJH8yh/smiling-young-man-illustration-1308-174669.avif"
 
-                    set(push(ref(db, 'allusers/')), {
+                    }).then(()=>{
+                        set(push(ref(db, 'allusers/')), {
                         name: name,
                         email: userCredential.user.email,
                         userid:userCredential.user.uid,
                         
                     })
+
+                    })
+
+
+
 
 
 
