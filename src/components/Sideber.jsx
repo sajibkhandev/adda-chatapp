@@ -24,7 +24,7 @@ const Sideber = () => {
   let data = useSelector((state => state.activeuser.value))
   
   
-  let [allusers,setAllUsers]=useState([])
+  
 
   let handleLogOut = () => {
     signOut(auth).then(() => {
@@ -42,21 +42,7 @@ const Sideber = () => {
 
 
 
-  useEffect(() => {
-    const alluserRef = ref(db, 'allusers');
-    onValue(alluserRef, (snapshot) => {
-      let arr=[]
-      snapshot.forEach(item=>{
-        if(data.uid==item.val().userid){
-          arr.push(item.val());
-        }
-      })
-      setAllUsers(arr);
-      
-      
-    });
 
-  }, [])
 
 
 
@@ -66,18 +52,18 @@ const Sideber = () => {
 
 
       <div className='flex flex-col items-center gap-y-17'>
-        {
-          allusers.map(item=>(
+        
+          
             <div className='group relative w-23 h-23 rounded-full'>
-          <Image className='rounded-full' src={Profile} />
+          <Image className='rounded-full' src={data.photoURL} />
           <div className='absolute top-0 left-0 w-full h-full bg-transparent group-hover:bg-black/30 rounded-full duration-500 flex justify-center items-center'>
             <IoMdCloudUpload className='text-xl text-transparent group-hover:text-white duration-500' />
           </div>
-          <h2 className='text-center font-semibold pt-1'>{item.name}</h2>
+          <h2 className='text-center font-semibold pt-1'>{data.displayName}</h2>
         </div>
 
-          ))
-        }
+          
+        
 
         <div className='flex flex-col gap-y-14'>
 

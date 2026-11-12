@@ -1,6 +1,5 @@
 import { IoSearchOutline } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import Profile from '../assets/profile.jpg'
 import Image from '../components/Image'
 import UserSection from '../components/UserSection';
 import TitleSection from '../components/TitleSection';
@@ -14,7 +13,12 @@ const Userlist = () => {
   const [alluser, setAllUser] = useState([])
   const data = useSelector(state => state.activeuser.value)
  
-    let [concatfriendrequrest,setConcateFriendRequest]=useState([])
+  let [concatfriendrequrest,setConcateFriendRequest]=useState([])
+  let [concatfriend,setConcateFriend]=useState([])
+  console.log(concatfriend);
+  
+
+  
 
 
 
@@ -36,11 +40,15 @@ const Userlist = () => {
   }, [])
 
   const handleAdd = (item) => {
+    
+    
     set(push(ref(db, 'friendrequestlists/')), {
       senderid:data.uid,
       sendername:data.displayName,
+      senderprofile:data.photoURL,
       receiverid:item.userid,
-      receivername:item.name
+      receivername:item.name,
+      receiverprofile:item.profile
     });
 
   }
@@ -63,6 +71,27 @@ const Userlist = () => {
     }, [])
 
 
+
+    
+  useEffect(() => {
+    const starCountRef = ref(db, 'friends/');
+    onValue(starCountRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach(item => {
+        
+          arr.push(item.val().receiverid + item.val().senderid)
+        
+
+      })
+      setConcateFriend(arr);
+
+
+    });
+
+  }, [])
+
+
+
     
 
 
@@ -77,13 +106,19 @@ const Userlist = () => {
         <div className='h-[260px] overflow-y-scroll'>
           {
             alluser.map(item => (
-              
                 concatfriendrequrest.includes(item.userid+data.uid)||
                 concatfriendrequrest.includes(data.uid+item.userid)
                 ?
-                <UserSection  buttontext="panding" image={Profile} name={item.name} bia={item.email} />
+                (concatfriend.includes(item.userid+data.uid) ||
+                concatfriend.includes(data.uid+item.userid)) 
+                ?
+                <UserSection  buttontext="friends" image={item.profile} name={item.name} bia={item.email} />
+
                 :
-                <UserSection onClickForAdd={()=>handleAdd(item)}  buttontext="add" image={Profile} name={item.name} bia={item.email} />
+                <UserSection  buttontext="padding" image={item.profile} name={item.name} bia={item.email} />
+                
+                :
+                <UserSection onClickForAdd={()=>handleAdd(item)}  buttontext="add" image={item.profile} name={item.name} bia={item.email} />
 
               
 

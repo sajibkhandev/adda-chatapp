@@ -70,6 +70,7 @@ const Registration = () => {
                         name: name,
                         email: userCredential.user.email,
                         userid:userCredential.user.uid,
+                        profile:userCredential.user.photoURL
                         
                     })
 
