@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 const Friendlist = () => {
   const db = getDatabase();
   const [friend, setFriend] = useState([])
-   const data = useSelector(state => state.activeuser.value)
+  const data = useSelector(state => state.activeuser.value)
 
 
   useEffect(() => {
@@ -33,6 +33,45 @@ const Friendlist = () => {
   }, [])
 
 
+  const handleBlock = (item) => {
+    if (data.uid == item.receiverid) {
+
+      set(push(ref(db, 'blocklists/')), {
+        blockid: item.senderid,
+        blockname: item.sendername,
+        blockprofile: item.senderprofile,
+        blockbyid: item.receiverid,
+        blockbyname: item.receivername,
+        blockbyprofile: item.receiverprofile,
+      }).then(() => {
+        remove(ref(db, 'friends/' + item.id))
+      })
+
+    } else if (data.uid == item.senderid) {
+        set(push(ref(db, 'blocklists/')), {
+        blockid: item.receiverid,
+        blockname: item.receivername,
+        blockprofile: item.receiverprofile,
+        blockbyid: item.senderid,
+        blockbyname: item.sendername,
+        blockbyprofile: item.senderprofile,
+
+      }).then(() => {
+        remove(ref(db, 'friends/' + item.id))
+      })
+
+    }
+
+
+
+
+
+
+
+
+  }
+
+
 
 
 
@@ -46,9 +85,9 @@ const Friendlist = () => {
         <div className='h-[260px] overflow-y-scroll'>
           {
             friend.map(item => (
-             
 
-              <UserSection image={data.uid==item.senderid? item.receiverprofile :item.senderprofile} name={data.uid==item.senderid? item.receivername :item.sendername} bia="Hi Guys, Wassup!" buttontext="block"/>
+
+              <UserSection onClickForAdd={() => handleBlock(item)} image={data.uid == item.senderid ? item.receiverprofile : item.senderprofile} name={data.uid == item.senderid ? item.receivername : item.sendername} bia="Hi Guys, Wassup!" buttontext="block" />
             ))
           }
 

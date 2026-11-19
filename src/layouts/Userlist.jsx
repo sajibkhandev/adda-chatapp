@@ -15,7 +15,8 @@ const Userlist = () => {
  
   let [concatfriendrequrest,setConcateFriendRequest]=useState([])
   let [concatfriend,setConcateFriend]=useState([])
-  console.log(concatfriend);
+  let [concatblocklist,setConcatBlockList]=useState([])
+ 
   
 
   
@@ -91,6 +92,26 @@ const Userlist = () => {
   }, [])
 
 
+   useEffect(() => {
+      const starCountRef = ref(db, 'blocklists/');
+      onValue(starCountRef, (snapshot) => {
+        let arr = []
+        snapshot.forEach(item => {
+
+          arr.push(item.val().blockid + item.val().blockbyid)
+        })
+        setConcatBlockList(arr);
+  
+  
+      });
+  
+    }, [])
+
+
+ 
+    
+
+
 
     
 
@@ -106,15 +127,24 @@ const Userlist = () => {
         <div className='h-[260px] overflow-y-scroll'>
           {
             alluser.map(item => (
+
+
+              concatblocklist.includes(item.userid+data.uid)||
+              concatblocklist.includes(data.uid+item.userid)
+              ?
+               <UserSection  buttontext="block" image={item.profile} name={item.name} bia={item.email} />
+              :
+
+               concatfriend.includes(item.userid+data.uid)||
+                concatfriend.includes(data.uid+item.userid)
+                ?
+                 <UserSection  buttontext="friend" image={item.profile} name={item.name} bia={item.email} />
+                 :
+
                 concatfriendrequrest.includes(item.userid+data.uid)||
                 concatfriendrequrest.includes(data.uid+item.userid)
                 ?
-                (concatfriend.includes(item.userid+data.uid) ||
-                concatfriend.includes(data.uid+item.userid)) 
-                ?
-                <UserSection  buttontext="friends" image={item.profile} name={item.name} bia={item.email} />
-
-                :
+               
                 <UserSection  buttontext="padding" image={item.profile} name={item.name} bia={item.email} />
                 
                 :
